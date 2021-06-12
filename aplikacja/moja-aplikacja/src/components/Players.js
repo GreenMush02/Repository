@@ -4,65 +4,99 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 
+import playersData from '../data/data.js'
+
 
 
 const Players = () => {
 
-const [players, setPlayers] = useState([])
-const [playerName, setPlayerName] = useState('')
-const [playerSurname, setPlayerSurname] = useState('')
-const [playerAge, setPlayerAge] = useState('')
-const [playerPosition, setPlayerPosition] = useState('')
-const [showDialog, setShowDialog] = useState (false)
+const [playersToShow, setPlayersToShow] = useState([])
+const [playerId, setPlayerID] = useState('')
+const [showDialog, setShowDialog] = useState(false)
 
 
-class Player {
+useEffect(() => {
+    
+    setPlayersToShow(playersData);
 
-constructor(name , surname, position, age,) {
-this.playerName = name;
-this.playerSurname = surname;
-this.playerPosition = position;
-this.playerAge = age;
-}
+    
 
-}
+}, []);
+
+
+const actionTemplate = () => {
+
+
+    return <div><Button icon="pi pi-user" className="p-button-rounded p-button-info" onClick={onChange}/>
+           <Button icon="pi pi-times" className="p-button-rounded p-button-danger" onClick={deletePlayer}/></div>
+    }
 
 const AddPlayer = () => {
+
+let newPlayer = {id: 7, name: 'Jan', lastName: 'Kowalski7', age: 18, position: 'LS'};
+
+playersToShow.push(newPlayer)
+console.log("dodano zawodnika")
+
+}
+
+const deletePlayer = () => {
+
+return alert("zawodnik usunięty")
+
+}
+
+const onChange = () => {
+
+setShowDialog(true);
+
 
 
 }
 
 const onHide = () => {
 
-    setShowDialog (false)
+    setShowDialog(false);
+
 }
 
 return (
 
     <div>
 
-   <DataTable value={players} selectionMode="single" >
+   <DataTable value={playersToShow} selectionMode="single" onSelectionChange={onChange}>
    <Column field="name" header="Imię"></Column>
-   <Column field="surname" header="Nazwisko"></Column>
+   <Column field="lastName" header="Nazwisko"></Column>
    <Column field="position" header="Pozycja"></Column>
    <Column field="age" header="Wiek"></Column>
+   <Column body={actionTemplate}/>
    </DataTable>
-   <Button label="Dodaj Zawodnika" onClick={() => {setShowDialog (true)}}></Button>
+   <Button label="Dodaj Zawodnika" onClick={AddPlayer}></Button>
 
    <Dialog visible={showDialog} modal={true}
                onHide={onHide}>
 
+   
+
+
 <div>
+<p>ID </p>
+   <p>NAME</p>
+   <p>LASTNAME</p>
+   <p>AGE</p>
+   <p>POSITION</p>
 
-<input type='text'></input>
-
-</div>
-
+    
+    </div>
 
                </Dialog>
 
+                    </div>
 
-</div>
+
+    
+
+
 
 
 
