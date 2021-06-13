@@ -3,6 +3,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
 
 import playersData from '../data/data.js'
 
@@ -12,6 +13,10 @@ const Players = () => {
 
 const [playersToShow, setPlayersToShow] = useState([])
 const [playerId, setPlayerID] = useState('')
+const [playerName, setPlayerName] = useState('')
+const [playerLastName, setPlayerLastName] = useState ('')
+const [playerAge, setPlayerAge] = useState ('')
+const [playerPosition, setPlayerPosition] = useState ('')
 const [showDialog, setShowDialog] = useState(false)
 
 
@@ -24,10 +29,10 @@ useEffect(() => {
 }, []);
 
 
-const actionTemplate = () => {
+const actionTemplate = (rowData) => {
 
 
-    return <div><Button icon="pi pi-user" className="p-button-rounded p-button-info" onClick={onChange}/>
+    return <div><Button icon="pi pi-user" className="p-button-rounded p-button-info" onClick={() => onEdit(rowData)}/>
            <Button icon="pi pi-times" className="p-button-rounded p-button-danger" onClick={deletePlayer}/></div>
     }
 
@@ -35,8 +40,8 @@ const AddPlayer = () => {
 
 let newPlayer = {id: 7, name: 'Jan', lastName: 'Kowalski7', age: 18, position: 'LS'};
 
-playersToShow.push(newPlayer)
-console.log("dodano zawodnika")
+playersToShow.push(newPlayer);
+console.log("dodano zawodnika");
 
 }
 
@@ -46,13 +51,33 @@ return alert("zawodnik usunięty")
 
 }
 
-const onChange = () => {
 
-setShowDialog(true);
-
-
+const onEdit = (rowData) => {
+    
+    
+    
+    setPlayerID(rowData.id);
+    setPlayerName(rowData.name);
+    setPlayerLastName(rowData.lastName);
+    setPlayerAge(rowData.age);
+    setPlayerPosition(rowData.position);
+    setShowDialog(true);
+    
 
 }
+
+const onEditConfirm = () => {
+
+setShowDialog(false);
+
+}
+
+const onEditCancel = () => {
+
+setShowDialog(false);
+
+}
+
 
 const onHide = () => {
 
@@ -60,11 +85,36 @@ const onHide = () => {
 
 }
 
+
+const onSetPlayerName = (e) => {
+
+    setPlayerName(e.target.value);
+
+}
+
+const onSetPlayerLastName = (e) => {
+
+    setPlayerLastName(e.target.value);
+
+}
+
+const onSetPlayerAge = (e) => {
+
+    setPlayerAge(e.target.value);
+
+}
+
+const onSetPlayerPosition = (e) => {
+
+    setPlayerPosition(e.target.value);
+
+}
+
 return (
 
     <div>
 
-   <DataTable value={playersToShow} selectionMode="single" onSelectionChange={onChange}>
+   <DataTable value={playersToShow} selectionMode="single">
    <Column field="name" header="Imię"></Column>
    <Column field="lastName" header="Nazwisko"></Column>
    <Column field="position" header="Pozycja"></Column>
@@ -80,13 +130,15 @@ return (
 
 
 <div>
-<p>ID </p>
-   <p>NAME</p>
-   <p>LASTNAME</p>
-   <p>AGE</p>
-   <p>POSITION</p>
-
-    
+   <p>ID:  {playerId}</p>
+   <p>NAME:</p><input value={playerName} onChange={onSetPlayerName}/>
+   <p>LASTNAME:</p><input value={playerLastName} onChange={onSetPlayerLastName}/>
+   <p>AGE:</p><input value={playerAge} onChange={onSetPlayerAge}/>
+   <p>POSITION:</p><input value={playerPosition} onChange={onSetPlayerPosition}/>
+<br></br>
+<br></br>
+    <Button label="Potwierdź zmiany" style={{backgroundColor: 'green'}} onClick={onEditConfirm}></Button> 
+    <Button label="Odrzuć zmiany" style={{backgroundColor: 'red'}} onClick={onEditCancel}></Button>
     </div>
 
                </Dialog>
@@ -101,39 +153,6 @@ return (
 
 
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 export default Players;
