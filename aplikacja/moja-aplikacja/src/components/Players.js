@@ -17,7 +17,6 @@ const [playerName, setPlayerName] = useState('')
 const [playerLastName, setPlayerLastName] = useState ('')
 const [playerAge, setPlayerAge] = useState ('')
 const [playerPosition, setPlayerPosition] = useState ('')
-const [selectedPlayer, setSelectedPlayer] = useState ('')
 const [showDialog, setShowDialog] = useState(false)
 
 
@@ -42,17 +41,13 @@ const AddPlayer = () => {
 let newPlayer = {id: 7, name: 'Jan', lastName: 'Kowalski7', age: 18, position: 'LS'};
 
 playersToShow.push(newPlayer);
-console.log("dodano zawodnika" + playersToShow[8]);
+console.log("dodano zawodnika");
 
 }
 
 const deletePlayer = () => {
 
-
-const index = playersToShow.indexOf(playerId);
-playersToShow.splice(index,1);
-
-return alert("zawodnik usunięty mm");
+return alert("zawodnik usunięty")
 
 }
 
@@ -66,14 +61,12 @@ const onEdit = (rowData) => {
     setPlayerLastName(rowData.lastName);
     setPlayerAge(rowData.age);
     setPlayerPosition(rowData.position);
-    setSelectedPlayer()
-
     setShowDialog(true);
     
 
 }
 
-const onEditConfirm = (rowData) => {
+const onEditConfirm = () => {
 
 setShowDialog(false);
 
