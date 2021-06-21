@@ -17,7 +17,10 @@ const [playerName, setPlayerName] = useState('')
 const [playerLastName, setPlayerLastName] = useState ('')
 const [playerAge, setPlayerAge] = useState ('')
 const [playerPosition, setPlayerPosition] = useState ('')
+const [playerStatus, setPlayerStatus] = useState ("Zdrowy")
 const [showDialog, setShowDialog] = useState(false)
+const [showDialog2, setShowDialog2] = useState(false)
+const [showDialog3, setShowDialog3] = useState(false)
 
 
 useEffect(() => {
@@ -33,7 +36,8 @@ const actionTemplate = (rowData) => {
 
 
     return <div><Button icon="pi pi-user" className="p-button-rounded p-button-info" onClick={() => onEdit(rowData)}/>
-           <Button icon="pi pi-times" className="p-button-rounded p-button-danger" onClick={deletePlayer}/></div>
+           <Button icon="pi pi-times" className="p-button-rounded p-button-danger" onClick={() => deletePlayer(rowData)}/>
+           <Button label="Stan Zawodnika" className="p-button-raised p-button-danger p-button-text" onClick={injuryInfo}/></div>
     }
 
 const AddPlayer = () => {
@@ -41,17 +45,22 @@ const AddPlayer = () => {
 let newPlayer = {id: 7, name: 'Jan', lastName: 'Kowalski7', age: 18, position: 'LS'};
 
 playersToShow.push(newPlayer);
-console.log("dodano zawodnika");
+console.log("dodano zawodnika dd");
 
 }
 
-const deletePlayer = () => {
+const deletePlayer = (rowData) => {
 
-return alert("zawodnik usunięty")
+    setPlayerID(rowData.id);
+    setShowDialog3(true);
 
 }
 
-
+const onDeleteConfirm = () => {
+    
+    const filteredItems = playersToShow.filter(item => item.id !== playerId);
+    setPlayersToShow(filteredItems);
+}
 const onEdit = (rowData) => {
     
     
@@ -85,11 +94,32 @@ const onHide = () => {
 
 }
 
+const onHide2 = () => {
 
-const onSetPlayerName = (e) => {
 
-    setPlayerName(e.target.value);
+setShowDialog2(false);
 
+}
+
+const onHide3 = () => {
+
+
+setShowDialog3(false);
+
+}
+
+const injuryInfo = () => {
+
+
+setShowDialog2(true);
+
+
+}
+
+const onSetPlayerName = (e, i) => {
+    
+
+    
 }
 
 const onSetPlayerLastName = (e) => {
@@ -101,6 +131,7 @@ const onSetPlayerLastName = (e) => {
 const onSetPlayerAge = (e) => {
 
     setPlayerAge(e.target.value);
+
 
 }
 
@@ -143,6 +174,32 @@ return (
 
                </Dialog>
 
+
+               <Dialog visible={showDialog2} modal={true} 
+               onHide={onHide2}>
+
+<div>
+    <p style={{color: 'green'}}>Stan zawodnika:  {playerStatus}</p>
+</div>
+
+
+               </Dialog>
+
+<Dialog visible={showDialog3} modal={true}
+onHide={onHide3}>
+
+
+
+
+<div>
+    <p>CZY NA PEWNO CHCESZ USUNĄĆ TEGO ZAWODNIKA?</p>
+    <Button label="Tak" style={{backgroundColor: 'green'}} onClick={onDeleteConfirm}></Button> 
+    <Button label="Nie" style={{backgroundColor: 'red'}} onClick={setShowDialog3(false)}></Button>
+</div>
+
+
+
+</Dialog>
                     </div>
 
 
@@ -155,4 +212,4 @@ return (
 );
 }
 
-export default Players;
+export default Players; 
